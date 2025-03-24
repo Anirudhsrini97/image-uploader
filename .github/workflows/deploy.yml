@@ -28,17 +28,14 @@ jobs:
 
       - name: Initialize Terraform
         run: |
-          cd terraform
           terraform init
 
       - name: Plan Terraform Changes
         run: |
-          cd terraform
           terraform plan -out=tfplan
 
       - name: Apply Terraform Changes
         run: |
-          cd terraform
           terraform apply -auto-approve tfplan
 
   deploy_lambda:
