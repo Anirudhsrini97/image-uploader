@@ -26,6 +26,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt -t .
+          zip -r lambda_function.zip .
+
       - name: Initialize Terraform
         run: |
           terraform init
@@ -37,23 +43,3 @@ jobs:
       - name: Apply Terraform Changes
         run: |
           terraform apply -auto-approve tfplan
-
-  deploy_lambda:
-    name: "Deploy Lambda Function"
-    runs-on: ubuntu-latest
-    needs: terraform
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt -t .
-          zip -r lambda_function.zip .
-
-      - name: Upload Lambda Code
-        run: |
-          aws lambda update-function-code \
-            --function-name S3BucketTriggerLambda \
-            --zip-file fileb://lambda/lambda_function.zip
