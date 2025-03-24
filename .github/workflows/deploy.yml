@@ -49,7 +49,6 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          cd lambda
           pip install -r requirements.txt -t .
           zip -r lambda_function.zip .
 
